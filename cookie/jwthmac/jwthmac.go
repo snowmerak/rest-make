@@ -2,22 +2,11 @@ package jwthmac
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/golang-jwt/jwt"
 )
 
-var secret []byte
-
-func init() {
-	sec := os.Getenv("JWT_SECRET")
-	if sec == "" {
-		secret = []byte("1q!2w@3e#4r$5t%6y^7u&8i*9o(0p)_+qazxswedc")
-	}
-	secret = []byte(sec)
-}
-
-func Deserialize(tokenString string) (jwt.MapClaims, error) {
+func Deserialize(secret, tokenString string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
@@ -34,7 +23,7 @@ func Deserialize(tokenString string) (jwt.MapClaims, error) {
 	}
 }
 
-func Serialize(claims jwt.StandardClaims, additional jwt.MapClaims) (string, error) {
+func Serialize(secret string, claims jwt.StandardClaims, additional jwt.MapClaims) (string, error) {
 	if additional == nil {
 		additional = make(jwt.MapClaims)
 	}
@@ -60,5 +49,5 @@ func Serialize(claims jwt.StandardClaims, additional jwt.MapClaims) (string, err
 		additional["sub"] = claims.Subject
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(secret)
+	return token.SignedString([]byte(secret))
 }
