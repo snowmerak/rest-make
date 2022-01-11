@@ -11,6 +11,7 @@ import (
 
 func main() {
 	init := kingpin.Command("init", "Initialize a new project")
+	parse := kingpin.Command("parse", "Parse a project")
 
 	switch kingpin.Parse() {
 	case init.FullCommand():
@@ -23,6 +24,19 @@ func main() {
 		if err := yaml.NewEncoder(f).Encode(spec.Init()); err != nil {
 			panic(err)
 		}
+		fmt.Println("Done!")
+	case parse.FullCommand():
+		fmt.Println("Parsing a project...")
+		f, err := os.Open("spec.yaml")
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
+		var s spec.Spec
+		if err := yaml.NewDecoder(f).Decode(&s); err != nil {
+			panic(err)
+		}
+		s.Parse()
 		fmt.Println("Done!")
 	default:
 		kingpin.Usage()
