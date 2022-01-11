@@ -1,0 +1,30 @@
+package encoding
+
+type Encoding string
+
+const (
+	UTF8        = Encoding("utf-8")
+	ASCII       = Encoding("ascii")
+	ISO88591    = Encoding("iso-8859-1")
+	ISO88592    = Encoding("iso-8859-2")
+	ISO8859_15  = Encoding("iso-8859-15")
+	Windows1251 = Encoding("windows-1251")
+	Windows1252 = Encoding("windows-1252")
+	USASCII     = Encoding("us-ascii")
+	UTF16       = Encoding("utf-16")
+	ShiftJIS    = Encoding("shift-jis")
+	EUCJP       = Encoding("euc-jp")
+	None        = Encoding("none")
+	EUCKR       = Encoding("euc-kr")
+	GB2312      = Encoding("gb2312")
+	ISO8859_9   = Encoding("iso-8859-9")
+	Windows1250 = Encoding("windows-1250")
+	Big5        = Encoding("big5")
+	Koi8R       = Encoding("koi8-r")
+	Windows1256 = Encoding("windows-1256")
+	CP1251      = Encoding("cp1251")
+	TIS620      = Encoding("tis-620")
+	Windows1253 = Encoding("windows-1253")
+	Windows874  = Encoding("windows-874")
+	latin1      = Encoding("latin-1")
+)
