@@ -32,13 +32,16 @@ func JWT(ctx *fasthttp.RequestCtx, criteria func(jwt.MapClaims) bool) error {
 func Dakuaz(ctx *fasthttp.RequestCtx, criteria func(*dakuaz.Dakuaz) bool) error {
 	ck := ctx.Request.Header.Cookie(token)
 	if ck == nil {
+		ctx.Response.Header.SetStatusCode(fasthttp.StatusUnauthorized)
 		return fmt.Errorf("no token")
 	}
 	d, err := dakuaz.Desirialize(string(ck))
 	if err != nil {
+		ctx.Response.Header.SetStatusCode(fasthttp.StatusUnauthorized)
 		return fmt.Errorf("auth.Dakuaz: %w", err)
 	}
 	if !criteria(d) {
+		ctx.Response.Header.SetStatusCode(fasthttp.StatusForbidden)
 		return fmt.Errorf("token is disqualified")
 	}
 	return nil
